@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>N8N Usage Summary</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f5f7fb; color: #1f2937; }
+    .container { max-width: 900px; margin: 0 auto; background: white; padding: 32px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+    h1 { margin-bottom: 8px; }
+    .summary { font-size: 18px; margin-bottom: 24px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid #e5e7eb; text-align: left; }
+    th { background: #eef2ff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>N8N Usage Summary</h1>
+    <div class="summary">
+      <strong>Total workflows:</strong> 23 |
+      <strong>Users:</strong> 15 |
+      <strong>Deployment:</strong> 2 |
+      <strong>Production:</strong> 9
+    </div>
+    <div class="summary">
+      <strong>Production gaps:</strong>
+      5 without monitoring,
+      0 without criticality
+    </div>
+
+    <div class="grid">
+      <div>
+        <h2>Created by Team</h2>
+        <table>
+          <thead>
+            <tr><th>Team</th><th>Count</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Tools/Compliance Ops</td><td>19</td></tr>
+<tr><td>Unassigned</td><td>4</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h2>Used by Team</h2>
+        <table>
+          <thead>
+            <tr><th>Team</th><th>Count</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Platform Engineering</td><td>2</td></tr>
+<tr><td>Tools/Compliance Ops</td><td>19</td></tr>
+<tr><td>Unassigned</td><td>4</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h2>By Environment</h2>
+        <table>
+          <thead>
+            <tr><th>Environment</th><th>Count</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Unknown</td><td>5</td></tr>
+<tr><td>non-production</td><td>9</td></tr>
+<tr><td>production</td><td>9</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h2>By Purpose</h2>
+        <table>
+          <thead>
+            <tr><th>Purpose</th><th>Count</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Backup</td><td>2</td></tr>
+<tr><td>Deployment</td><td>3</td></tr>
+<tr><td>Monitoring</td><td>3</td></tr>
+<tr><td>Notification</td><td>2</td></tr>
+<tr><td>Operations</td><td>4</td></tr>
+<tr><td>Testing</td><td>5</td></tr>
+<tr><td>Unknown</td><td>4</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h2>By Criticality</h2>
+        <table>
+          <thead>
+            <tr><th>Criticality</th><th>Count</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>High</td><td>4</td></tr>
+<tr><td>Low</td><td>4</td></tr>
+<tr><td>Medium</td><td>5</td></tr>
+<tr><td>Unknown</td><td>10</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h2>By Monitoring Status</h2>
+        <table>
+          <thead>
+            <tr><th>Status</th><th>Count</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Monitored</td><td>4</td></tr>
+<tr><td>Not monitored</td><td>19</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

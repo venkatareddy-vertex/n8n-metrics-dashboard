@@ -1,0 +1,236 @@
+{
+  "workflows": [
+    {
+      "name": "Jira Deployment Risk Analysis",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": ["Tools/Compliance Ops", "Platform Engineering"],
+      "users": ["dipanshu", "venkata"],
+      "environment": "production",
+      "purpose": "Deployment",
+      "criticality": "High",
+      "monitoring": true,
+      "deploymentManaged": true
+    },
+    {
+      "name": "Jira Deployment Risk Analysis (OLD)",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": ["Tools/Compliance Ops"],
+      "users": ["dipanshu"],
+      "environment": "non-production",
+      "purpose": "Deployment",
+      "criticality": "Low",
+      "monitoring": false
+    },
+    {
+      "name": "Move PCC Ticket",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": ["Tools/Compliance Ops"],
+      "users": ["dipanshu"],
+      "environment": "production",
+      "purpose": "Deployment",
+      "criticality": "Medium",
+      "monitoring": false
+    },
+    {
+      "name": "Remove Jira comment",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": ["Tools/Compliance Ops"],
+      "users": ["dipanshu"],
+      "environment": "production",
+      "purpose": "Operations",
+      "criticality": "Low",
+      "monitoring": false
+    },
+    {
+      "name": "Jira MCP",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": ["Tools/Compliance Ops"],
+      "users": ["dipanshu"],
+      "environment": "non-production",
+      "purpose": "Operations",
+      "criticality": "Unknown",
+      "monitoring": false
+    },
+    {
+      "name": "Jira Attachment Testing",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": ["Tools/Compliance Ops"],
+      "users": ["dipanshu"],
+      "environment": "non-production",
+      "purpose": "Testing",
+      "criticality": "Low",
+      "monitoring": false
+    },
+    {
+      "name": "Jira stuff",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "non-production",
+      "purpose": "Testing",
+      "criticality": "Unknown",
+      "monitoring": false
+    },
+    {
+      "name": "Jira testing",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "non-production",
+      "purpose": "Testing",
+      "criticality": "Unknown",
+      "monitoring": false
+    },
+    {
+      "name": "Post Approval to Teams",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": ["Tools/Compliance Ops", "Platform Engineering"],
+      "users": ["dipanshu", "venkata"],
+      "environment": "production",
+      "purpose": "Notification",
+      "criticality": "High",
+      "monitoring": true,
+      "deploymentManaged": true
+    },
+    {
+      "name": "Remove Teams Post",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": ["Tools/Compliance Ops"],
+      "users": ["dipanshu"],
+      "environment": "production",
+      "purpose": "Notification",
+      "criticality": "Medium",
+      "monitoring": false
+    },
+    {
+      "name": "Teams Test",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "non-production",
+      "purpose": "Testing",
+      "criticality": "Unknown",
+      "monitoring": false
+    },
+    {
+      "name": "Post Event to Datadog",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": ["Tools/Compliance Ops"],
+      "users": ["dipanshu"],
+      "environment": "production",
+      "purpose": "Monitoring",
+      "criticality": "Medium",
+      "monitoring": true
+    },
+    {
+      "name": "Post Event to Datadog-tCLzjS1hZdZt5ynM",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "Unknown",
+      "purpose": "Monitoring",
+      "criticality": "Unknown",
+      "monitoring": false
+    },
+    {
+      "name": "Set Environment Params",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": ["Tools/Compliance Ops"],
+      "users": ["dipanshu"],
+      "environment": "production",
+      "purpose": "Operations",
+      "criticality": "Medium",
+      "monitoring": false
+    },
+    {
+      "name": "Set Environment Params (OLD)",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "non-production",
+      "purpose": "Operations",
+      "criticality": "Low",
+      "monitoring": false
+    },
+    {
+      "name": "Back up your n8n workflows to Github",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": ["Tools/Compliance Ops"],
+      "users": ["dipanshu"],
+      "environment": "production",
+      "purpose": "Backup",
+      "criticality": "High",
+      "monitoring": false
+    },
+    {
+      "name": "Back up and restore n8n workflows with GitHub sync",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": ["Tools/Compliance Ops"],
+      "users": ["dipanshu"],
+      "environment": "non-production",
+      "purpose": "Backup",
+      "criticality": "Medium",
+      "monitoring": false
+    },
+    {
+      "name": "Error Handler",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": ["Tools/Compliance Ops"],
+      "users": ["dipanshu"],
+      "environment": "production",
+      "purpose": "Monitoring",
+      "criticality": "High",
+      "monitoring": true
+    },
+    {
+      "name": "Check Hippo Calendar",
+      "createdByTeam": "Unassigned",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "Unknown",
+      "purpose": "Unknown",
+      "criticality": "Unknown",
+      "monitoring": false
+    },
+    {
+      "name": "Testing Change Freeze Windows",
+      "createdByTeam": "Tools/Compliance Ops",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "non-production",
+      "purpose": "Testing",
+      "criticality": "Unknown",
+      "monitoring": false
+    },
+    {
+      "name": "My workflow 6",
+      "createdByTeam": "Unassigned",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "Unknown",
+      "purpose": "Unknown",
+      "criticality": "Unknown",
+      "monitoring": false
+    },
+    {
+      "name": "My workflow 20",
+      "createdByTeam": "Unassigned",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "Unknown",
+      "purpose": "Unknown",
+      "criticality": "Unknown",
+      "monitoring": false
+    },
+    {
+      "name": "burrito",
+      "createdByTeam": "Unassigned",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "Unknown",
+      "purpose": "Unknown",
+      "criticality": "Unknown",
+      "monitoring": false
+    }
+  ]
+}

@@ -264,6 +264,7 @@ def format_html_report(result: dict[str, Any]) -> str:
   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />
   <title>N8N Usage Summary</title>
   <script src=\"https://cdn.jsdelivr.net/npm/chart.js@4\"></script>
+  <script src=\"https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2\"></script>
   <style>
     * {{ box-sizing: border-box; }}
     body {{ font-family: Arial, sans-serif; margin: 0; padding: 40px; background: #f5f7fb; color: #1f2937; }}
@@ -400,9 +401,19 @@ def format_html_report(result: dict[str, Any]) -> str:
             borderRadius: 6,
           }}],
         }},
+        plugins: [ChartDataLabels],
         options: {{
           responsive: true,
-          plugins: {{ legend: {{ display: false }} }},
+          plugins: {{
+            legend: {{ display: false }},
+            datalabels: {{
+              anchor: 'end',
+              align: 'top',
+              color: '#1f2937',
+              font: {{ weight: 'bold' }},
+              formatter: (value) => value,
+            }},
+          }},
           scales: {{ y: {{ beginAtZero: true, ticks: {{ precision: 0 }} }} }},
         }},
       }});

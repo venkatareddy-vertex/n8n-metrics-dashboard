@@ -296,8 +296,9 @@ def format_html_report(result: dict[str, Any]) -> str:
     .badge-needsreview {{ background: #fef3c7; color: #92400e; }}
     .badge-notsupportable {{ background: #fee2e2; color: #991b1b; }}
     .badge-notassessed {{ background: #e5e7eb; color: #374151; }}
-    #resultCount {{ font-size: 13px; color: #6b7280; }}
-  </style>
+    #resultCount {{ font-size: 13px; color: #6b7280; }}    .notice {{ background: #fffbeb; border: 1px solid #fbbf24; border-radius: 10px; padding: 16px 20px; margin: 16px 0 24px; font-size: 14px; line-height: 1.6; }}
+    .notice strong {{ color: #92400e; }}
+    .notice ul {{ margin: 8px 0 0; padding-left: 20px; }}  </style>
 </head>
 <body>
   <div class=\"container\">
@@ -315,6 +316,14 @@ def format_html_report(result: dict[str, Any]) -> str:
       <div class=\"card\"><div class=\"value\">{result['production_without_monitoring']}</div><div class=\"label\">Prod without Monitoring</div></div>
       <div class=\"card\"><div class=\"value\">{result['production_without_criticality']}</div><div class=\"label\">Prod without Criticality</div></div>
       <div class=\"card\"><div class=\"value\">{result['production_without_owner']}</div><div class=\"label\">Prod without Owner</div></div>
+    </div>
+
+    <div class=\"notice\">
+      <strong>Data availability note:</strong> Owner, environment, purpose, criticality, and supportability below are sourced from real n8n workflow export metadata (owner field, active status) pulled directly from the Vertex GitHub backup repositories.
+      <ul>
+        <li><strong>Not available here:</strong> execution counts, error rates, success rates, and runtime active-user activity. These require live n8n REST API access (<code>GET /executions</code> per workflow) or Datadog log queries (<code>kube_namespace</code> filter) &mdash; neither is currently accessible from this dashboard's data source.</li>
+        <li><strong>To close this gap:</strong> an n8n admin must pull execution history via the API/UI for each instance (Tools, Restricted, Unrestricted) and export it alongside the workflow inventory.</li>
+      </ul>
     </div>
 
     <div class=\"charts-grid\">

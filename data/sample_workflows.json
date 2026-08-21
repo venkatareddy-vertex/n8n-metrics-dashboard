@@ -2,6 +2,7 @@
   "workflows": [
     {
       "name": "Jira Deployment Risk Analysis",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": ["Tools/Compliance Ops", "Platform Engineering"],
       "users": ["dipanshu", "venkata"],
@@ -9,80 +10,96 @@
       "purpose": "Deployment",
       "criticality": "High",
       "monitoring": true,
-      "deploymentManaged": true
+      "deploymentManaged": true,
+      "supportability": "Supportable"
     },
     {
       "name": "Jira Deployment Risk Analysis (OLD)",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": ["Tools/Compliance Ops"],
       "users": ["dipanshu"],
       "environment": "non-production",
       "purpose": "Deployment",
       "criticality": "Low",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Not Supportable"
     },
     {
       "name": "Move PCC Ticket",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": ["Tools/Compliance Ops"],
       "users": ["dipanshu"],
       "environment": "production",
       "purpose": "Deployment",
       "criticality": "Medium",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Needs Review"
     },
     {
       "name": "Remove Jira comment",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": ["Tools/Compliance Ops"],
       "users": ["dipanshu"],
       "environment": "production",
       "purpose": "Operations",
       "criticality": "Low",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Needs Review"
     },
     {
       "name": "Jira MCP",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": ["Tools/Compliance Ops"],
       "users": ["dipanshu"],
       "environment": "non-production",
       "purpose": "Operations",
       "criticality": "Unknown",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Needs Review"
     },
     {
       "name": "Jira Attachment Testing",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": ["Tools/Compliance Ops"],
       "users": ["dipanshu"],
       "environment": "non-production",
       "purpose": "Testing",
       "criticality": "Low",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Not Supportable"
     },
     {
       "name": "Jira stuff",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": [],
       "users": [],
       "environment": "non-production",
       "purpose": "Testing",
       "criticality": "Unknown",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Not Supportable"
     },
     {
       "name": "Jira testing",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": [],
       "users": [],
       "environment": "non-production",
       "purpose": "Testing",
       "criticality": "Unknown",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Not Supportable"
     },
     {
       "name": "Post Approval to Teams",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": ["Tools/Compliance Ops", "Platform Engineering"],
       "users": ["dipanshu", "venkata"],
@@ -90,147 +107,405 @@
       "purpose": "Notification",
       "criticality": "High",
       "monitoring": true,
-      "deploymentManaged": true
+      "deploymentManaged": true,
+      "supportability": "Supportable"
     },
     {
       "name": "Remove Teams Post",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": ["Tools/Compliance Ops"],
       "users": ["dipanshu"],
       "environment": "production",
       "purpose": "Notification",
       "criticality": "Medium",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Needs Review"
     },
     {
       "name": "Teams Test",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": [],
       "users": [],
       "environment": "non-production",
       "purpose": "Testing",
       "criticality": "Unknown",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Not Supportable"
     },
     {
       "name": "Post Event to Datadog",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": ["Tools/Compliance Ops"],
       "users": ["dipanshu"],
       "environment": "production",
       "purpose": "Monitoring",
       "criticality": "Medium",
-      "monitoring": true
+      "monitoring": true,
+      "supportability": "Supportable"
     },
     {
       "name": "Post Event to Datadog-tCLzjS1hZdZt5ynM",
-      "createdByTeam": "Tools/Compliance Ops",
+      "instance": "Tools",
+      "createdByTeam": "Unassigned",
       "usedByTeams": [],
       "users": [],
       "environment": "Unknown",
       "purpose": "Monitoring",
       "criticality": "Unknown",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Not Supportable"
     },
     {
       "name": "Set Environment Params",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": ["Tools/Compliance Ops"],
       "users": ["dipanshu"],
       "environment": "production",
       "purpose": "Operations",
       "criticality": "Medium",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Needs Review"
     },
     {
       "name": "Set Environment Params (OLD)",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": [],
       "users": [],
       "environment": "non-production",
       "purpose": "Operations",
       "criticality": "Low",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Not Supportable"
     },
     {
       "name": "Back up your n8n workflows to Github",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": ["Tools/Compliance Ops"],
       "users": ["dipanshu"],
       "environment": "production",
       "purpose": "Backup",
       "criticality": "High",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Supportable"
     },
     {
       "name": "Back up and restore n8n workflows with GitHub sync",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": ["Tools/Compliance Ops"],
       "users": ["dipanshu"],
       "environment": "non-production",
       "purpose": "Backup",
       "criticality": "Medium",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Needs Review"
     },
     {
       "name": "Error Handler",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": ["Tools/Compliance Ops"],
       "users": ["dipanshu"],
       "environment": "production",
       "purpose": "Monitoring",
       "criticality": "High",
-      "monitoring": true
+      "monitoring": true,
+      "supportability": "Supportable"
     },
     {
       "name": "Check Hippo Calendar",
+      "instance": "Tools",
       "createdByTeam": "Unassigned",
       "usedByTeams": [],
       "users": [],
       "environment": "Unknown",
       "purpose": "Unknown",
       "criticality": "Unknown",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Not Supportable"
     },
     {
       "name": "Testing Change Freeze Windows",
+      "instance": "Tools",
       "createdByTeam": "Tools/Compliance Ops",
       "usedByTeams": [],
       "users": [],
       "environment": "non-production",
       "purpose": "Testing",
       "criticality": "Unknown",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Not Supportable"
     },
     {
       "name": "My workflow 6",
+      "instance": "Tools",
       "createdByTeam": "Unassigned",
       "usedByTeams": [],
       "users": [],
       "environment": "Unknown",
       "purpose": "Unknown",
       "criticality": "Unknown",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Not Supportable"
     },
     {
       "name": "My workflow 20",
+      "instance": "Tools",
       "createdByTeam": "Unassigned",
       "usedByTeams": [],
       "users": [],
       "environment": "Unknown",
       "purpose": "Unknown",
       "criticality": "Unknown",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Not Supportable"
     },
     {
       "name": "burrito",
+      "instance": "Tools",
       "createdByTeam": "Unassigned",
       "usedByTeams": [],
       "users": [],
       "environment": "Unknown",
       "purpose": "Unknown",
       "criticality": "Unknown",
-      "monitoring": false
+      "monitoring": false,
+      "supportability": "Not Supportable"
+    },
+    {
+      "name": "My workflow 3",
+      "instance": "Restricted",
+      "createdByTeam": "Unassigned",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "development",
+      "purpose": "Unknown",
+      "criticality": "Low",
+      "monitoring": false,
+      "supportability": "Not Supportable"
+    },
+    {
+      "name": "My workflow2",
+      "instance": "Restricted",
+      "createdByTeam": "Unassigned",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "development",
+      "purpose": "Unknown",
+      "criticality": "Low",
+      "monitoring": false,
+      "supportability": "Not Supportable"
+    },
+    {
+      "name": "n8n-healthcheck (Restricted)",
+      "instance": "Restricted",
+      "createdByTeam": "CloudOperations (inferred)",
+      "usedByTeams": ["CloudOperations (inferred)"],
+      "users": [],
+      "environment": "development",
+      "purpose": "Monitoring",
+      "criticality": "High",
+      "monitoring": false,
+      "supportability": "Needs Review"
+    },
+    {
+      "name": "getOracleTrx",
+      "instance": "Unrestricted",
+      "createdByTeam": "OracleConnectors (inferred)",
+      "usedByTeams": ["OracleConnectors (inferred)"],
+      "users": [],
+      "environment": "development",
+      "purpose": "Data Integration",
+      "criticality": "Medium",
+      "monitoring": false,
+      "supportability": "Needs Review"
+    },
+    {
+      "name": "downloadVertexOnly",
+      "instance": "Unrestricted",
+      "createdByTeam": "OracleConnectors (inferred)",
+      "usedByTeams": ["OracleConnectors (inferred)"],
+      "users": [],
+      "environment": "development",
+      "purpose": "Data Integration",
+      "criticality": "Medium",
+      "monitoring": false,
+      "supportability": "Needs Review"
+    },
+    {
+      "name": "reconChat-DM",
+      "instance": "Unrestricted",
+      "createdByTeam": "Unassigned",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "development",
+      "purpose": "AI/Automation",
+      "criticality": "Medium",
+      "monitoring": false,
+      "supportability": "Needs Review"
+    },
+    {
+      "name": "My workflow",
+      "instance": "Unrestricted",
+      "createdByTeam": "Unassigned",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "development",
+      "purpose": "Unknown",
+      "criticality": "Unknown",
+      "monitoring": false,
+      "supportability": "Not Supportable"
+    },
+    {
+      "name": "getVertexOnly",
+      "instance": "Unrestricted",
+      "createdByTeam": "OracleConnectors (inferred)",
+      "usedByTeams": ["OracleConnectors (inferred)"],
+      "users": [],
+      "environment": "development",
+      "purpose": "Data Integration",
+      "criticality": "Medium",
+      "monitoring": false,
+      "supportability": "Needs Review"
+    },
+    {
+      "name": "downloadOracleOnly",
+      "instance": "Unrestricted",
+      "createdByTeam": "OracleConnectors (inferred)",
+      "usedByTeams": ["OracleConnectors (inferred)"],
+      "users": [],
+      "environment": "development",
+      "purpose": "Data Integration",
+      "criticality": "Medium",
+      "monitoring": false,
+      "supportability": "Needs Review"
+    },
+    {
+      "name": "RBAC",
+      "instance": "Unrestricted",
+      "createdByTeam": "Systems Administration (inferred)",
+      "usedByTeams": ["Systems Administration (inferred)"],
+      "users": [],
+      "environment": "development",
+      "purpose": "Operations",
+      "criticality": "High",
+      "monitoring": false,
+      "supportability": "Needs Review"
+    },
+    {
+      "name": "reconChat",
+      "instance": "Unrestricted",
+      "createdByTeam": "Unassigned",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "development",
+      "purpose": "AI/Automation",
+      "criticality": "Medium",
+      "monitoring": false,
+      "supportability": "Needs Review"
+    },
+    {
+      "name": "My workflow 2",
+      "instance": "Unrestricted",
+      "createdByTeam": "Unassigned",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "development",
+      "purpose": "Unknown",
+      "criticality": "Unknown",
+      "monitoring": false,
+      "supportability": "Not Supportable"
+    },
+    {
+      "name": "getfidata",
+      "instance": "Unrestricted",
+      "createdByTeam": "OracleConnectors (inferred)",
+      "usedByTeams": ["OracleConnectors (inferred)"],
+      "users": [],
+      "environment": "development",
+      "purpose": "Data Integration",
+      "criticality": "Medium",
+      "monitoring": false,
+      "supportability": "Needs Review"
+    },
+    {
+      "name": "reconChat (duplicate)",
+      "instance": "Unrestricted",
+      "createdByTeam": "Unassigned",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "development",
+      "purpose": "AI/Automation",
+      "criticality": "Low",
+      "monitoring": false,
+      "supportability": "Not Supportable"
+    },
+    {
+      "name": "dlew-testing",
+      "instance": "Unrestricted",
+      "createdByTeam": "Unassigned",
+      "usedByTeams": [],
+      "users": [],
+      "environment": "development",
+      "purpose": "Testing",
+      "criticality": "Low",
+      "monitoring": false,
+      "supportability": "Not Supportable"
+    },
+    {
+      "name": "n8n-healthcheck (Unrestricted)",
+      "instance": "Unrestricted",
+      "createdByTeam": "CloudOperations (inferred)",
+      "usedByTeams": ["CloudOperations (inferred)"],
+      "users": [],
+      "environment": "development",
+      "purpose": "Monitoring",
+      "criticality": "High",
+      "monitoring": false,
+      "supportability": "Needs Review"
+    },
+    {
+      "name": "downloadAll",
+      "instance": "Unrestricted",
+      "createdByTeam": "OracleConnectors (inferred)",
+      "usedByTeams": ["OracleConnectors (inferred)"],
+      "users": [],
+      "environment": "development",
+      "purpose": "Data Integration",
+      "criticality": "Medium",
+      "monitoring": false,
+      "supportability": "Needs Review"
+    },
+    {
+      "name": "downloadDifferences",
+      "instance": "Unrestricted",
+      "createdByTeam": "OracleConnectors (inferred)",
+      "usedByTeams": ["OracleConnectors (inferred)"],
+      "users": [],
+      "environment": "development",
+      "purpose": "Data Integration",
+      "criticality": "Medium",
+      "monitoring": false,
+      "supportability": "Needs Review"
+    },
+    {
+      "name": "getFIListNew",
+      "instance": "Unrestricted",
+      "createdByTeam": "OracleConnectors (inferred)",
+      "usedByTeams": ["OracleConnectors (inferred)"],
+      "users": [],
+      "environment": "development",
+      "purpose": "Data Integration",
+      "criticality": "Medium",
+      "monitoring": false,
+      "supportability": "Needs Review"
     }
   ]
 }
+

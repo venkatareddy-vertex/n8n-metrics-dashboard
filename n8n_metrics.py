@@ -201,6 +201,64 @@ def analyze_workflows(workflows: Any, all_teams: list[str] | None = None) -> dic
     }
 
 
+def compute_adoption_report(result: dict[str, Any]) -> dict[str, Any]:
+    """Derive team-adoption, developer-experience, and business-impact metrics.
+
+    Kept separate from the operational inventory report per the requirement to
+    maintain distinct reporting for adoption vs. day-to-day workflow tracking.
+    """
+    details = result.get("workflow_details", [])
+    total = len(details) or 1
+
+    def pct(numerator: int, denominator: int) -> float:
+        return round((numerator / denominator) * 100, 1) if denominator else 0.0
+
+    real_team_owners = {
+        d["owner"] for d in details
+        if d["owner"] not in ("Unassigned",) and not d["owner"].startswith("Individual:")
+        and not d["owner"].startswith("Shared Automation Mailbox")
+    }
+    individual_owned = sum(1 for d in details if d["owner"].startswith("Individual:"))
+    unassigned = sum(1 for d in details if d["owner"] == "Unassigned")
+    active_instances = sorted(result.get("instances", {}).keys())
+
+    prod = [d for d in details if d["production"]]
+    prod_total = len(prod) or 1
+    prod_high_crit = sum(1 for d in prod if d["criticality"] == "High")
+    prod_supportable = sum(1 for d in prod if d["supportability"] == "Supportable")
+    prod_monitored = sum(1 for d in prod if d["monitoring"] == "Monitored")
+
+    deployment_managed = sum(1 for d in details if d["deploymentManaged"])
+    backup_automation = sum(1 for d in details if d["purpose"] == "Backup")
+    monitored_total = sum(1 for d in details if d["monitoring"] == "Monitored")
+    supportable_total = sum(1 for d in details if d["supportability"] == "Supportable")
+
+    return {
+        "adoption": {
+            "teams_actively_using_n8n": len(real_team_owners),
+            "team_names": sorted(real_team_owners),
+            "individual_owned_workflows": individual_owned,
+            "unassigned_workflows": unassigned,
+            "instances_in_use": active_instances,
+            "instances_in_use_count": len(active_instances),
+            "total_workflows": len(details),
+        },
+        "developer_experience": {
+            "deployment_automation_workflows": deployment_managed,
+            "deployment_automation_coverage_pct": pct(deployment_managed, len(details)),
+            "backup_self_service_workflows": backup_automation,
+            "monitoring_coverage_pct": pct(monitored_total, len(details)),
+        },
+        "business_impact": {
+            "production_workflows": len(prod),
+            "production_high_criticality_pct": pct(prod_high_crit, prod_total),
+            "production_supportable_pct": pct(prod_supportable, prod_total),
+            "production_monitored_pct": pct(prod_monitored, prod_total),
+            "overall_supportable_pct": pct(supportable_total, len(details)),
+        },
+    }
+
+
 def _format_breakdown(lines: list[str], title: str, counts: dict[str, int]) -> None:
     lines.append("")
     lines.append(title)
@@ -233,6 +291,40 @@ def format_summary_report(result: dict[str, Any]) -> str:
     _format_breakdown(lines, "By Monitoring Status", result["monitoring"])
     _format_breakdown(lines, "By Supportability", result["supportability"])
 
+    adoption_report = compute_adoption_report(result)
+    lines.append("")
+    lines.append("=" * 40)
+    lines.append("Adoption, Developer Experience & Business Impact")
+    lines.append("(separate reporting lens - not part of operational inventory)")
+    lines.append("=" * 40)
+
+    a = adoption_report["adoption"]
+    lines.append("")
+    lines.append("Team Adoption")
+    lines.append("-" * 20)
+    lines.append(f"- Teams actively using N8N: {a['teams_actively_using_n8n']} ({', '.join(a['team_names']) or 'none'})")
+    lines.append(f"- Individually-owned workflows (not team-assigned): {a['individual_owned_workflows']}")
+    lines.append(f"- Unassigned/unowned workflows: {a['unassigned_workflows']}")
+    lines.append(f"- N8N instances in active use: {a['instances_in_use_count']} ({', '.join(a['instances_in_use'])})")
+
+    d = adoption_report["developer_experience"]
+    lines.append("")
+    lines.append("Developer Experience")
+    lines.append("-" * 20)
+    lines.append(f"- Deployment automation workflows: {d['deployment_automation_workflows']} ({d['deployment_automation_coverage_pct']}% of inventory)")
+    lines.append(f"- Backup/self-service automation workflows: {d['backup_self_service_workflows']}")
+    lines.append(f"- Overall monitoring coverage: {d['monitoring_coverage_pct']}%")
+
+    b = adoption_report["business_impact"]
+    lines.append("")
+    lines.append("Business Impact")
+    lines.append("-" * 20)
+    lines.append(f"- Production workflows: {b['production_workflows']}")
+    lines.append(f"- Production workflows at High criticality: {b['production_high_criticality_pct']}%")
+    lines.append(f"- Production workflows rated Supportable: {b['production_supportable_pct']}%")
+    lines.append(f"- Production workflows with monitoring: {b['production_monitored_pct']}%")
+    lines.append(f"- Overall inventory rated Supportable: {b['overall_supportable_pct']}%")
+
     return "\n".join(lines)
 
 
@@ -256,6 +348,10 @@ def format_html_report(result: dict[str, Any]) -> str:
         "monitoring": result["monitoring"],
         "supportability": result["supportability"],
     })
+    adoption_report = compute_adoption_report(result)
+    ar_a = adoption_report["adoption"]
+    ar_d = adoption_report["developer_experience"]
+    ar_b = adoption_report["business_impact"]
 
     return f"""<!DOCTYPE html>
 <html lang=\"en\">
@@ -385,7 +481,54 @@ def format_html_report(result: dict[str, Any]) -> str:
       </thead>
       <tbody id=\"inventoryBody\"></tbody>
     </table>
-  </div>
+    <hr style="margin:40px 0; border:none; border-top:2px dashed #d1d5db;" />
+    <h2 style="margin-bottom:4px;">Adoption, Developer Experience &amp; Business Impact</h2>
+    <p style="color:#6b7280; font-size:13px; margin-top:0;">Separate reporting lens &mdash; not part of the operational workflow inventory above.</p>
+
+    <div class="cards">
+      <div class="card"><div class="value">{ar_a['teams_actively_using_n8n']}</div><div class="label">Teams Actively Using N8N</div></div>
+      <div class="card"><div class="value">{ar_a['instances_in_use_count']}</div><div class="label">N8N Instances in Use</div></div>
+      <div class="card"><div class="value">{ar_a['individual_owned_workflows']}</div><div class="label">Individually-Owned Workflows</div></div>
+      <div class="card"><div class="value">{ar_a['unassigned_workflows']}</div><div class="label">Unowned Workflows</div></div>
+    </div>
+
+    <div class="grid">
+      <div>
+        <h2>Team Adoption</h2>
+        <table>
+          <tbody>
+            <tr><td>Teams actively using N8N</td><td>{ar_a['teams_actively_using_n8n']} ({', '.join(ar_a['team_names']) or 'none'})</td></tr>
+            <tr><td>Instances in active use</td><td>{', '.join(ar_a['instances_in_use'])}</td></tr>
+            <tr><td>Individually-owned workflows</td><td>{ar_a['individual_owned_workflows']}</td></tr>
+            <tr><td>Unassigned/unowned workflows</td><td>{ar_a['unassigned_workflows']}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h2>Developer Experience</h2>
+        <table>
+          <tbody>
+            <tr><td>Deployment automation workflows</td><td>{ar_d['deployment_automation_workflows']} ({ar_d['deployment_automation_coverage_pct']}%)</td></tr>
+            <tr><td>Backup/self-service automation</td><td>{ar_d['backup_self_service_workflows']}</td></tr>
+            <tr><td>Overall monitoring coverage</td><td>{ar_d['monitoring_coverage_pct']}%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h2>Business Impact</h2>
+        <table>
+          <tbody>
+            <tr><td>Production workflows</td><td>{ar_b['production_workflows']}</td></tr>
+            <tr><td>Production at High criticality</td><td>{ar_b['production_high_criticality_pct']}%</td></tr>
+            <tr><td>Production rated Supportable</td><td>{ar_b['production_supportable_pct']}%</td></tr>
+            <tr><td>Production with monitoring</td><td>{ar_b['production_monitored_pct']}%</td></tr>
+            <tr><td>Overall inventory Supportable</td><td>{ar_b['overall_supportable_pct']}%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>  </div>
 
   <script>
     const workflowDetails = {details_json};

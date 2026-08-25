@@ -4,6 +4,7 @@ import argparse
 import csv
 import json
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -271,6 +272,7 @@ def format_summary_report(result: dict[str, Any]) -> str:
     lines: list[str] = []
     lines.append("N8N Usage Summary")
     lines.append("=" * 40)
+    lines.append(f"Report generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}")
     lines.append(f"Total workflows: {result['total_workflows']}")
     lines.append(f"Total users: {result['total_users']}")
     lines.append(f"Deployment workflows: {result['deployment_workflows']}")
@@ -352,6 +354,7 @@ def format_html_report(result: dict[str, Any]) -> str:
     ar_a = adoption_report["adoption"]
     ar_d = adoption_report["developer_experience"]
     ar_b = adoption_report["business_impact"]
+    report_generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
 
     return f"""<!DOCTYPE html>
 <html lang=\"en\">
@@ -399,6 +402,7 @@ def format_html_report(result: dict[str, Any]) -> str:
 <body>
   <div class=\"container\">
     <h1>N8N Usage Summary</h1>
+    <p style=\"color:#6b7280; font-size:13px; margin-top:-4px;\">Report generated: {report_generated_at}</p>
     <div class=\"summary\">
       <strong>Total workflows:</strong> {result['total_workflows']} |
       <strong>Users:</strong> {result['total_users']} |

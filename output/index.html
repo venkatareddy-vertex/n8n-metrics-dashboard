@@ -44,7 +44,7 @@
 <body>
   <div class="container">
     <h1>N8N Usage Summary</h1>
-    <p style="color:#6b7280; font-size:13px; margin-top:-4px;">Report generated: 2026-08-25 06:18:30 UTC</p>
+    <p style="color:#6b7280; font-size:13px; margin-top:-4px;">Report generated: 2026-08-25 06:25:58 UTC</p>
     <div class="summary">
       <strong>Total workflows:</strong> 42 |
       <strong>Users:</strong> 23 |
@@ -58,14 +58,6 @@
       <div class="card"><div class="value">5</div><div class="label">Prod without Monitoring</div></div>
       <div class="card"><div class="value">0</div><div class="label">Prod without Criticality</div></div>
       <div class="card"><div class="value">0</div><div class="label">Prod without Owner</div></div>
-    </div>
-
-    <div class="notice">
-      <strong>Data availability note:</strong> Owner, environment, purpose, criticality, and supportability below are sourced from real n8n workflow export metadata (owner field, active status) pulled directly from the Vertex GitHub backup repositories.
-      <ul>
-        <li><strong>Not available here:</strong> execution counts, error rates, success rates, and runtime active-user activity. These require live n8n REST API access (<code>GET /executions</code> per workflow) or Datadog log queries (<code>kube_namespace</code> filter) &mdash; neither is currently accessible from this dashboard's data source.</li>
-        <li><strong>To close this gap:</strong> an n8n admin must pull execution history via the API/UI for each instance (Tools, Restricted, Unrestricted) and export it alongside the workflow inventory.</li>
-      </ul>
     </div>
 
     <div class="charts-grid">

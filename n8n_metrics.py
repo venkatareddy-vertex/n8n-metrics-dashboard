@@ -418,14 +418,6 @@ def format_html_report(result: dict[str, Any]) -> str:
       <div class=\"card\"><div class=\"value\">{result['production_without_owner']}</div><div class=\"label\">Prod without Owner</div></div>
     </div>
 
-    <div class=\"notice\">
-      <strong>Data availability note:</strong> Owner, environment, purpose, criticality, and supportability below are sourced from real n8n workflow export metadata (owner field, active status) pulled directly from the Vertex GitHub backup repositories.
-      <ul>
-        <li><strong>Not available here:</strong> execution counts, error rates, success rates, and runtime active-user activity. These require live n8n REST API access (<code>GET /executions</code> per workflow) or Datadog log queries (<code>kube_namespace</code> filter) &mdash; neither is currently accessible from this dashboard's data source.</li>
-        <li><strong>To close this gap:</strong> an n8n admin must pull execution history via the API/UI for each instance (Tools, Restricted, Unrestricted) and export it alongside the workflow inventory.</li>
-      </ul>
-    </div>
-
     <div class=\"charts-grid\">
       <div class=\"chart-box\"><h2>By N8N Instance</h2><canvas id=\"chartInstances\"></canvas></div>
       <div class=\"chart-box\"><h2>By Environment</h2><canvas id=\"chartEnvironments\"></canvas></div>

@@ -646,17 +646,21 @@ def format_html_report(result: dict[str, Any], history: list[dict[str, Any]] | N
         plugins: [ChartDataLabels],
         options: {{
           responsive: true,
+          layout: {{ padding: {{ top: 28 }} }},
           plugins: {{
             legend: {{ display: false }},
             datalabels: {{
               anchor: 'end',
               align: 'top',
+              offset: 4,
+              clamp: true,
+              clip: false,
               color: '#1f2937',
               font: {{ weight: 'bold' }},
               formatter: (value) => value,
             }},
           }},
-          scales: {{ y: {{ beginAtZero: true, ticks: {{ precision: 0 }} }} }},
+          scales: {{ y: {{ beginAtZero: true, grace: '15%', ticks: {{ precision: 0 }} }} }},
         }},
       }});
     }}

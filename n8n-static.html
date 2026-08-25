@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>N8N Usage Summary</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 40px; background: #f5f7fb; color: #1f2937; }
+    .container { max-width: 1200px; margin: 0 auto; background: white; padding: 32px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+    h1 { margin-bottom: 8px; }
+    h2 { font-size: 16px; }
+    .summary { font-size: 18px; margin-bottom: 12px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin: 20px 0 28px; }
+    .card { background: #eef2ff; border-radius: 10px; padding: 16px; text-align: center; }
+    .card .value { font-size: 28px; font-weight: 700; color: #3730a3; }
+    .card .label { font-size: 13px; color: #4b5563; margin-top: 4px; }
+    .charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 32px; }
+    .chart-box { background: #fafafa; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; }
+    .chart-box canvas { max-height: 240px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-bottom: 32px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid #e5e7eb; text-align: left; }
+    th { background: #eef2ff; cursor: pointer; user-select: none; }
+    th.sortable:hover { background: #e0e7ff; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; align-items: center; }
+    .toolbar input, .toolbar select { padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; }
+    .toolbar input { flex: 1; min-width: 200px; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+    .badge-high { background: #fee2e2; color: #991b1b; }
+    .badge-medium { background: #fef3c7; color: #92400e; }
+    .badge-low { background: #dcfce7; color: #166534; }
+    .badge-unknown { background: #e5e7eb; color: #374151; }
+    .badge-supportable { background: #dcfce7; color: #166534; }
+    .badge-needsreview { background: #fef3c7; color: #92400e; }
+    .badge-notsupportable { background: #fee2e2; color: #991b1b; }
+    .badge-notassessed { background: #e5e7eb; color: #374151; }
+    #resultCount { font-size: 13px; color: #6b7280; }    .notice { background: #fffbeb; border: 1px solid #fbbf24; border-radius: 10px; padding: 16px 20px; margin: 16px 0 24px; font-size: 14px; line-height: 1.6; }
+    .notice strong { color: #92400e; }
+    .notice ul { margin: 8px 0 0; padding-left: 20px; }  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>N8N Usage Summary</h1>
+    <p style="color:#6b7280; font-size:13px; margin-top:-4px;">Report generated: 2026-08-25 06:32:22 UTC</p>
+    <div class="summary">
+      <strong>Total workflows:</strong> 42 |
+      <strong>Users:</strong> 23 |
+      <strong>Deployment:</strong> 2 |
+      <strong>Production:</strong> 9
+    </div>
+
+    <div class="cards">
+      <div class="card"><div class="value">42</div><div class="label">Total Workflows</div></div>
+      <div class="card"><div class="value">9</div><div class="label">Production</div></div>
+      <div class="card"><div class="value">5</div><div class="label">Prod without Monitoring</div></div>
+      <div class="card"><div class="value">0</div><div class="label">Prod without Criticality</div></div>
+      <div class="card"><div class="value">0</div><div class="label">Prod without Owner</div></div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-box"><h2>By N8N Instance</h2><canvas id="chartInstances"></canvas></div>
+      <div class="chart-box"><h2>By Environment</h2><canvas id="chartEnvironments"></canvas></div>
+      <div class="chart-box"><h2>By Purpose</h2><canvas id="chartPurposes"></canvas></div>
+      <div class="chart-box"><h2>By Criticality</h2><canvas id="chartCriticality"></canvas></div>
+      <div class="chart-box"><h2>By Monitoring Status</h2><canvas id="chartMonitoring"></canvas></div>
+      <div class="chart-box"><h2>By Supportability</h2><canvas id="chartSupportability"></canvas></div>
+    </div>
+
+    <div class="grid">
+      <div>
+        <h2>Created by Team</h2>
+        <table>
+          <thead>
+            <tr><th>Team</th><th>Count</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Individual: Arun Manglick</td><td>1</td></tr>
+<tr><td>Individual: Dan Maiale</td><td>2</td></tr>
+<tr><td>Individual: Dave Lewis</td><td>1</td></tr>
+<tr><td>Individual: Guru Srinivasan</td><td>1</td></tr>
+<tr><td>OracleConnectors</td><td>9</td></tr>
+<tr><td>Shared Automation Mailbox (n8n admin)</td><td>3</td></tr>
+<tr><td>Systems Administration</td><td>2</td></tr>
+<tr><td>Tools/Compliance Ops</td><td>18</td></tr>
+<tr><td>Unassigned</td><td>5</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h2>Used by Team</h2>
+        <table>
+          <thead>
+            <tr><th>Team</th><th>Count</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Individual: Arun Manglick</td><td>1</td></tr>
+<tr><td>Individual: Dan Maiale</td><td>2</td></tr>
+<tr><td>Individual: Dave Lewis</td><td>1</td></tr>
+<tr><td>Individual: Guru Srinivasan</td><td>1</td></tr>
+<tr><td>OracleConnectors</td><td>9</td></tr>
+<tr><td>Platform Engineering</td><td>2</td></tr>
+<tr><td>Shared Automation Mailbox (n8n admin)</td><td>3</td></tr>
+<tr><td>Systems Administration</td><td>2</td></tr>
+<tr><td>Tools/Compliance Ops</td><td>18</td></tr>
+<tr><td>Unassigned</td><td>5</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h2>Workflow Inventory (live, searchable)</h2>
+    <div class="toolbar">
+      <input id="searchBox" type="text" placeholder="Search by workflow name or owner..." />
+      <select id="filterInstance"><option value="">All Instances</option></select>
+      <select id="filterEnvironment"><option value="">All Environments</option></select>
+      <select id="filterCriticality"><option value="">All Criticality</option></select>
+      <select id="filterSupportability"><option value="">All Supportability</option></select>
+      <span id="resultCount"></span>
+    </div>
+    <table id="inventoryTable">
+      <thead>
+        <tr>
+          <th class="sortable" data-key="name">Name</th>
+          <th class="sortable" data-key="instance">Instance</th>
+          <th class="sortable" data-key="environment">Environment</th>
+          <th class="sortable" data-key="purpose">Purpose</th>
+          <th class="sortable" data-key="owner">Owner</th>
+          <th class="sortable" data-key="criticality">Criticality</th>
+          <th class="sortable" data-key="monitoring">Monitoring</th>
+          <th class="sortable" data-key="supportability">Supportability</th>
+        </tr>
+      </thead>
+      <tbody id="inventoryBody"></tbody>
+    </table>
+    <hr style="margin:40px 0; border:none; border-top:2px dashed #d1d5db;" />
+    <h2 style="margin-bottom:4px;">Adoption, Developer Experience &amp; Business Impact</h2>
+    <p style="color:#6b7280; font-size:13px; margin-top:0;">Separate reporting lens &mdash; not part of the operational workflow inventory above.</p>
+
+    <div class="cards">
+      <div class="card"><div class="value">3</div><div class="label">Teams Actively Using N8N</div></div>
+      <div class="card"><div class="value">3</div><div class="label">N8N Instances in Use</div></div>
+      <div class="card"><div class="value">5</div><div class="label">Individually-Owned Workflows</div></div>
+      <div class="card"><div class="value">5</div><div class="label">Unowned Workflows</div></div>
+    </div>
+
+    <div class="grid">
+      <div>
+        <h2>Team Adoption</h2>
+        <table>
+          <tbody>
+            <tr><td>Teams actively using N8N</td><td>3 (OracleConnectors, Systems Administration, Tools/Compliance Ops)</td></tr>
+            <tr><td>Instances in active use</td><td>Restricted, Tools, Unrestricted</td></tr>
+            <tr><td>Individually-owned workflows</td><td>5</td></tr>
+            <tr><td>Unassigned/unowned workflows</td><td>5</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h2>Developer Experience</h2>
+        <table>
+          <tbody>
+            <tr><td>Deployment automation workflows</td><td>2 (4.8%)</td></tr>
+            <tr><td>Backup/self-service automation</td><td>2</td></tr>
+            <tr><td>Overall monitoring coverage</td><td>9.5%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h2>Business Impact</h2>
+        <table>
+          <tbody>
+            <tr><td>Production workflows</td><td>9</td></tr>
+            <tr><td>Production at High criticality</td><td>44.4%</td></tr>
+            <tr><td>Production rated Supportable</td><td>55.6%</td></tr>
+            <tr><td>Production with monitoring</td><td>44.4%</td></tr>
+            <tr><td>Overall inventory Supportable</td><td>11.9%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>  </div>
+
+  <script>
+    const workflowDetails = [{"name": "Jira Deployment Risk Analysis", "instance": "Tools", "environment": "production", "purpose": "Deployment", "owner": "Tools/Compliance Ops", "criticality": "High", "monitoring": "Monitored", "supportability": "Supportable", "production": true, "deploymentManaged": true}, {"name": "Jira Deployment Risk Analysis (OLD)", "instance": "Tools", "environment": "non-production", "purpose": "Deployment", "owner": "Tools/Compliance Ops", "criticality": "Low", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "Move PCC Ticket", "instance": "Tools", "environment": "production", "purpose": "Deployment", "owner": "Tools/Compliance Ops", "criticality": "Medium", "monitoring": "Not monitored", "supportability": "Needs Review", "production": true, "deploymentManaged": false}, {"name": "Remove Jira comment", "instance": "Tools", "environment": "production", "purpose": "Operations", "owner": "Tools/Compliance Ops", "criticality": "Low", "monitoring": "Not monitored", "supportability": "Needs Review", "production": true, "deploymentManaged": false}, {"name": "Jira MCP", "instance": "Tools", "environment": "non-production", "purpose": "Operations", "owner": "Tools/Compliance Ops", "criticality": "Unknown", "monitoring": "Not monitored", "supportability": "Needs Review", "production": false, "deploymentManaged": false}, {"name": "Jira Attachment Testing", "instance": "Tools", "environment": "non-production", "purpose": "Testing", "owner": "Tools/Compliance Ops", "criticality": "Low", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "Jira stuff", "instance": "Tools", "environment": "non-production", "purpose": "Testing", "owner": "Tools/Compliance Ops", "criticality": "Unknown", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "Jira testing", "instance": "Tools", "environment": "non-production", "purpose": "Testing", "owner": "Tools/Compliance Ops", "criticality": "Unknown", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "Post Approval to Teams", "instance": "Tools", "environment": "production", "purpose": "Notification", "owner": "Tools/Compliance Ops", "criticality": "High", "monitoring": "Monitored", "supportability": "Supportable", "production": true, "deploymentManaged": true}, {"name": "Remove Teams Post", "instance": "Tools", "environment": "production", "purpose": "Notification", "owner": "Tools/Compliance Ops", "criticality": "Medium", "monitoring": "Not monitored", "supportability": "Needs Review", "production": true, "deploymentManaged": false}, {"name": "Teams Test", "instance": "Tools", "environment": "non-production", "purpose": "Testing", "owner": "Tools/Compliance Ops", "criticality": "Unknown", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "Post Event to Datadog", "instance": "Tools", "environment": "production", "purpose": "Monitoring", "owner": "Tools/Compliance Ops", "criticality": "Medium", "monitoring": "Monitored", "supportability": "Supportable", "production": true, "deploymentManaged": false}, {"name": "Post Event to Datadog-tCLzjS1hZdZt5ynM", "instance": "Tools", "environment": "Unknown", "purpose": "Monitoring", "owner": "Unassigned", "criticality": "Unknown", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "Set Environment Params", "instance": "Tools", "environment": "production", "purpose": "Operations", "owner": "Tools/Compliance Ops", "criticality": "Medium", "monitoring": "Not monitored", "supportability": "Needs Review", "production": true, "deploymentManaged": false}, {"name": "Set Environment Params (OLD)", "instance": "Tools", "environment": "non-production", "purpose": "Operations", "owner": "Tools/Compliance Ops", "criticality": "Low", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "Back up your n8n workflows to Github", "instance": "Tools", "environment": "production", "purpose": "Backup", "owner": "Tools/Compliance Ops", "criticality": "High", "monitoring": "Not monitored", "supportability": "Supportable", "production": true, "deploymentManaged": false}, {"name": "Back up and restore n8n workflows with GitHub sync", "instance": "Tools", "environment": "non-production", "purpose": "Backup", "owner": "Tools/Compliance Ops", "criticality": "Medium", "monitoring": "Not monitored", "supportability": "Needs Review", "production": false, "deploymentManaged": false}, {"name": "Error Handler", "instance": "Tools", "environment": "production", "purpose": "Monitoring", "owner": "Tools/Compliance Ops", "criticality": "High", "monitoring": "Monitored", "supportability": "Supportable", "production": true, "deploymentManaged": false}, {"name": "Check Hippo Calendar", "instance": "Tools", "environment": "Unknown", "purpose": "Unknown", "owner": "Unassigned", "criticality": "Unknown", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "Testing Change Freeze Windows", "instance": "Tools", "environment": "non-production", "purpose": "Testing", "owner": "Tools/Compliance Ops", "criticality": "Unknown", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "My workflow 6", "instance": "Tools", "environment": "Unknown", "purpose": "Unknown", "owner": "Unassigned", "criticality": "Unknown", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "My workflow 20", "instance": "Tools", "environment": "Unknown", "purpose": "Unknown", "owner": "Unassigned", "criticality": "Unknown", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "burrito", "instance": "Tools", "environment": "Unknown", "purpose": "Unknown", "owner": "Unassigned", "criticality": "Unknown", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "My workflow 3", "instance": "Restricted", "environment": "development", "purpose": "Unknown", "owner": "Shared Automation Mailbox (n8n admin)", "criticality": "Low", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "My workflow2", "instance": "Restricted", "environment": "development", "purpose": "Unknown", "owner": "Shared Automation Mailbox (n8n admin)", "criticality": "Low", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "n8n-healthcheck (Restricted)", "instance": "Restricted", "environment": "development", "purpose": "Monitoring", "owner": "Shared Automation Mailbox (n8n admin)", "criticality": "High", "monitoring": "Not monitored", "supportability": "Needs Review", "production": false, "deploymentManaged": false}, {"name": "getOracleTrx", "instance": "Unrestricted", "environment": "development", "purpose": "Data Integration", "owner": "OracleConnectors", "criticality": "Medium", "monitoring": "Not monitored", "supportability": "Needs Review", "production": false, "deploymentManaged": false}, {"name": "downloadVertexOnly", "instance": "Unrestricted", "environment": "development", "purpose": "Data Integration", "owner": "OracleConnectors", "criticality": "Medium", "monitoring": "Not monitored", "supportability": "Needs Review", "production": false, "deploymentManaged": false}, {"name": "reconChat-DM", "instance": "Unrestricted", "environment": "development", "purpose": "AI/Automation", "owner": "Individual: Dan Maiale", "criticality": "Medium", "monitoring": "Not monitored", "supportability": "Needs Review", "production": false, "deploymentManaged": false}, {"name": "My workflow", "instance": "Unrestricted", "environment": "development", "purpose": "Unknown", "owner": "Individual: Arun Manglick", "criticality": "Unknown", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "getVertexOnly", "instance": "Unrestricted", "environment": "development", "purpose": "Data Integration", "owner": "OracleConnectors", "criticality": "Medium", "monitoring": "Not monitored", "supportability": "Needs Review", "production": false, "deploymentManaged": false}, {"name": "downloadOracleOnly", "instance": "Unrestricted", "environment": "development", "purpose": "Data Integration", "owner": "OracleConnectors", "criticality": "Medium", "monitoring": "Not monitored", "supportability": "Needs Review", "production": false, "deploymentManaged": false}, {"name": "RBAC", "instance": "Unrestricted", "environment": "development", "purpose": "Operations", "owner": "Systems Administration", "criticality": "High", "monitoring": "Not monitored", "supportability": "Needs Review", "production": false, "deploymentManaged": false}, {"name": "reconChat", "instance": "Unrestricted", "environment": "development", "purpose": "AI/Automation", "owner": "OracleConnectors", "criticality": "Medium", "monitoring": "Not monitored", "supportability": "Needs Review", "production": false, "deploymentManaged": false}, {"name": "My workflow 2", "instance": "Unrestricted", "environment": "development", "purpose": "Unknown", "owner": "Individual: Dan Maiale", "criticality": "Unknown", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "getfidata", "instance": "Unrestricted", "environment": "development", "purpose": "Data Integration", "owner": "OracleConnectors", "criticality": "Medium", "monitoring": "Not monitored", "supportability": "Needs Review", "production": false, "deploymentManaged": false}, {"name": "reconChat (duplicate)", "instance": "Unrestricted", "environment": "development", "purpose": "AI/Automation", "owner": "Individual: Guru Srinivasan", "criticality": "Low", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "dlew-testing", "instance": "Unrestricted", "environment": "development", "purpose": "Testing", "owner": "Individual: Dave Lewis", "criticality": "Low", "monitoring": "Not monitored", "supportability": "Not Supportable", "production": false, "deploymentManaged": false}, {"name": "n8n-healthcheck (Unrestricted)", "instance": "Unrestricted", "environment": "development", "purpose": "Monitoring", "owner": "Systems Administration", "criticality": "High", "monitoring": "Not monitored", "supportability": "Needs Review", "production": false, "deploymentManaged": false}, {"name": "downloadAll", "instance": "Unrestricted", "environment": "development", "purpose": "Data Integration", "owner": "OracleConnectors", "criticality": "Medium", "monitoring": "Not monitored", "supportability": "Needs Review", "production": false, "deploymentManaged": false}, {"name": "downloadDifferences", "instance": "Unrestricted", "environment": "development", "purpose": "Data Integration", "owner": "OracleConnectors", "criticality": "Medium", "monitoring": "Not monitored", "supportability": "Needs Review", "production": false, "deploymentManaged": false}, {"name": "getFIListNew", "instance": "Unrestricted", "environment": "development", "purpose": "Data Integration", "owner": "OracleConnectors", "criticality": "Medium", "monitoring": "Not monitored", "supportability": "Needs Review", "production": false, "deploymentManaged": false}];
+    const chartData = {"instances": {"Restricted": 3, "Tools": 23, "Unrestricted": 16}, "environments": {"Unknown": 5, "development": 19, "non-production": 9, "production": 9}, "purposes": {"AI/Automation": 3, "Backup": 2, "Data Integration": 8, "Deployment": 3, "Monitoring": 5, "Notification": 2, "Operations": 5, "Testing": 6, "Unknown": 8}, "criticality": {"High": 7, "Low": 8, "Medium": 15, "Unknown": 12}, "monitoring": {"Monitored": 4, "Not monitored": 38}, "supportability": {"Needs Review": 19, "Not Supportable": 18, "Supportable": 5}};
+
+    function badgeClass(prefix, value) {
+      const key = String(value).toLowerCase().replace(/[^a-z]/g, '');
+      return `badge badge-${key || 'unknown'}`;
+    }
+
+    function renderChart(canvasId, dataObj, label) {
+      const ctx = document.getElementById(canvasId);
+      if (!ctx) return;
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(dataObj),
+          datasets: [{
+            label: label,
+            data: Object.values(dataObj),
+            backgroundColor: '#6366f1',
+            borderRadius: 6,
+          }],
+        },
+        plugins: [ChartDataLabels],
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            datalabels: {
+              anchor: 'end',
+              align: 'top',
+              color: '#1f2937',
+              font: { weight: 'bold' },
+              formatter: (value) => value,
+            },
+          },
+          scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+        },
+      });
+    }
+
+    renderChart('chartInstances', chartData.instances, 'Workflows');
+    renderChart('chartEnvironments', chartData.environments, 'Workflows');
+    renderChart('chartPurposes', chartData.purposes, 'Workflows');
+    renderChart('chartCriticality', chartData.criticality, 'Workflows');
+    renderChart('chartMonitoring', chartData.monitoring, 'Workflows');
+    renderChart('chartSupportability', chartData.supportability, 'Workflows');
+
+    function populateFilter(selectId, key) {
+      const select = document.getElementById(selectId);
+      const values = [...new Set(workflowDetails.map(w => w[key]))].sort();
+      values.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v;
+        opt.textContent = v;
+        select.appendChild(opt);
+      });
+    }
+    populateFilter('filterInstance', 'instance');
+    populateFilter('filterEnvironment', 'environment');
+    populateFilter('filterCriticality', 'criticality');
+    populateFilter('filterSupportability', 'supportability');
+
+    let sortKey = 'name';
+    let sortAsc = true;
+
+    function applyFilters() {
+      const search = document.getElementById('searchBox').value.toLowerCase();
+      const fInstance = document.getElementById('filterInstance').value;
+      const fEnvironment = document.getElementById('filterEnvironment').value;
+      const fCriticality = document.getElementById('filterCriticality').value;
+      const fSupportability = document.getElementById('filterSupportability').value;
+
+      let filtered = workflowDetails.filter(w => {
+        const matchesSearch = !search ||
+          w.name.toLowerCase().includes(search) ||
+          w.owner.toLowerCase().includes(search);
+        return matchesSearch &&
+          (!fInstance || w.instance === fInstance) &&
+          (!fEnvironment || w.environment === fEnvironment) &&
+          (!fCriticality || w.criticality === fCriticality) &&
+          (!fSupportability || w.supportability === fSupportability);
+      });
+
+      filtered.sort((a, b) => {
+        const av = String(a[sortKey]).toLowerCase();
+        const bv = String(b[sortKey]).toLowerCase();
+        if (av < bv) return sortAsc ? -1 : 1;
+        if (av > bv) return sortAsc ? 1 : -1;
+        return 0;
+      });
+
+      const tbody = document.getElementById('inventoryBody');
+      tbody.innerHTML = filtered.map(w => `
+        <tr>
+          <td>${w.name}</td>
+          <td>${w.instance}</td>
+          <td>${w.environment}</td>
+          <td>${w.purpose}</td>
+          <td>${w.owner}</td>
+          <td><span class="${badgeClass('crit', w.criticality)}">${w.criticality}</span></td>
+          <td>${w.monitoring}</td>
+          <td><span class="${badgeClass('supp', w.supportability)}">${w.supportability}</span></td>
+        </tr>
+      `).join('');
+      document.getElementById('resultCount').textContent = `${filtered.length} of ${workflowDetails.length} workflows`;
+    }
+
+    document.getElementById('searchBox').addEventListener('input', applyFilters);
+    document.getElementById('filterInstance').addEventListener('change', applyFilters);
+    document.getElementById('filterEnvironment').addEventListener('change', applyFilters);
+    document.getElementById('filterCriticality').addEventListener('change', applyFilters);
+    document.getElementById('filterSupportability').addEventListener('change', applyFilters);
+
+    document.querySelectorAll('#inventoryTable th.sortable').forEach(th => {
+      th.addEventListener('click', () => {
+        const key = th.getAttribute('data-key');
+        if (sortKey === key) {
+          sortAsc = !sortAsc;
+        } else {
+          sortKey = key;
+          sortAsc = true;
+        }
+        applyFilters();
+      });
+    });
+
+    applyFilters();
+  </script>
+</body>
+</html>
+

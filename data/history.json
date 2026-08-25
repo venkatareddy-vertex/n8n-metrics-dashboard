@@ -1,0 +1,18 @@
+[
+  {
+    "timestamp": "2026-08-25 06:38:21 UTC",
+    "total_workflows": 42,
+    "production_workflows": 9,
+    "monitored_workflows": 4,
+    "supportable_workflows": 5,
+    "teams_actively_using_n8n": 3
+  },
+  {
+    "timestamp": "2026-08-25 06:38:21 UTC",
+    "total_workflows": 42,
+    "production_workflows": 9,
+    "monitored_workflows": 4,
+    "supportable_workflows": 5,
+    "teams_actively_using_n8n": 3
+  }
+]

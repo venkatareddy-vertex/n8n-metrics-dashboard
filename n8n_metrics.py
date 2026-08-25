@@ -234,6 +234,15 @@ def compute_adoption_report(result: dict[str, Any]) -> dict[str, Any]:
     monitored_total = sum(1 for d in details if d["monitoring"] == "Monitored")
     supportable_total = sum(1 for d in details if d["supportability"] == "Supportable")
 
+    engagement: Counter[str] = Counter()
+    for d in details:
+        engagement[d["owner"]] += 1
+    engagement.pop("Unassigned", None)
+    leaderboard = [
+        {"owner": owner, "workflow_count": count, "type": "Team" if owner in real_team_owners else "Individual/Other"}
+        for owner, count in engagement.most_common()
+    ]
+
     return {
         "adoption": {
             "teams_actively_using_n8n": len(real_team_owners),
@@ -257,7 +266,59 @@ def compute_adoption_report(result: dict[str, Any]) -> dict[str, Any]:
             "production_monitored_pct": pct(prod_monitored, prod_total),
             "overall_supportable_pct": pct(supportable_total, len(details)),
         },
+        "user_engagement": {
+            "distinct_engaged_owners": len(leaderboard),
+            "leaderboard": leaderboard,
+        },
     }
+
+
+HISTORY_SCHEMA_VERSION = 1
+
+
+def record_history_snapshot(result: dict[str, Any], history_path: str | Path) -> list[dict[str, Any]]:
+    """Append a timestamped metrics snapshot so trends can be tracked over time.
+
+    This is the only honest way to show "trends" without live n8n execution
+    data: we track how our own inventory/adoption metrics change run over run.
+    """
+    path = Path(history_path)
+    history: list[dict[str, Any]] = []
+    if path.exists():
+        with path.open("r", encoding="utf-8") as fh:
+            try:
+                history = json.load(fh)
+            except json.JSONDecodeError:
+                history = []
+
+    adoption = compute_adoption_report(result)
+    snapshot = {
+        "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),
+        "total_workflows": result["total_workflows"],
+        "production_workflows": result["production_workflows"],
+        "monitored_workflows": result["monitoring"].get("Monitored", 0),
+        "supportable_workflows": result["supportability"].get("Supportable", 0),
+        "teams_actively_using_n8n": adoption["adoption"]["teams_actively_using_n8n"],
+    }
+    history.append(snapshot)
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as fh:
+        json.dump(history, fh, indent=2)
+        fh.write("\n")
+
+    return history
+
+
+def load_history(history_path: str | Path) -> list[dict[str, Any]]:
+    path = Path(history_path)
+    if not path.exists():
+        return []
+    with path.open("r", encoding="utf-8") as fh:
+        try:
+            return json.load(fh)
+        except json.JSONDecodeError:
+            return []
 
 
 def _format_breakdown(lines: list[str], title: str, counts: dict[str, int]) -> None:
@@ -327,10 +388,17 @@ def format_summary_report(result: dict[str, Any]) -> str:
     lines.append(f"- Production workflows with monitoring: {b['production_monitored_pct']}%")
     lines.append(f"- Overall inventory rated Supportable: {b['overall_supportable_pct']}%")
 
+    e = adoption_report["user_engagement"]
+    lines.append("")
+    lines.append("User Engagement (workflow ownership leaderboard)")
+    lines.append("-" * 20)
+    for entry in e["leaderboard"]:
+        lines.append(f"- {entry['owner']} [{entry['type']}]: {entry['workflow_count']} workflow(s)")
+
     return "\n".join(lines)
 
 
-def format_html_report(result: dict[str, Any]) -> str:
+def format_html_report(result: dict[str, Any], history: list[dict[str, Any]] | None = None) -> str:
     def rows(counts: dict[str, int]) -> str:
         html_rows = []
         for team, count in counts.items():
@@ -354,7 +422,13 @@ def format_html_report(result: dict[str, Any]) -> str:
     ar_a = adoption_report["adoption"]
     ar_d = adoption_report["developer_experience"]
     ar_b = adoption_report["business_impact"]
+    ar_e = adoption_report["user_engagement"]
     report_generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+    history_json = json.dumps(history or [])
+    leaderboard_rows = "\n".join(
+        f"<tr><td>{entry['owner']}</td><td>{entry['type']}</td><td>{entry['workflow_count']}</td></tr>"
+        for entry in ar_e["leaderboard"]
+    )
 
     return f"""<!DOCTYPE html>
 <html lang=\"en\">
@@ -524,11 +598,31 @@ def format_html_report(result: dict[str, Any]) -> str:
           </tbody>
         </table>
       </div>
-    </div>  </div>
+    </div>
+
+    <h2>User Engagement (workflow ownership leaderboard)</h2>
+    <p style="color:#6b7280; font-size:13px; margin-top:0;">Ranks each known team/individual by number of workflows they own &mdash; a proxy for engagement breadth, since real login/execution activity requires n8n API access not currently available.</p>
+    <table>
+      <thead>
+        <tr><th>Owner</th><th>Type</th><th>Workflow Count</th></tr>
+      </thead>
+      <tbody>
+        {leaderboard_rows}
+      </tbody>
+    </table>
+
+    <h2>Adoption Trend Over Time</h2>
+    <p style="color:#6b7280; font-size:13px; margin-top:0;">Tracks how the inventory itself changes across report runs (real workflow-execution trend data requires n8n API/Datadog access not currently available). Each point is one report generation.</p>
+    <div class="chart-box" id="trendBox">
+      <canvas id="chartTrend"></canvas>
+    </div>
+    <p id="trendEmptyNote" style="display:none; color:#6b7280; font-size:13px;">No history yet &mdash; generate this report more than once (with <code>--history</code>) to start building a trend line.</p>
+  </div>
 
   <script>
     const workflowDetails = {details_json};
     const chartData = {chart_data_json};
+    const historyData = {history_json};
 
     function badgeClass(prefix, value) {{
       const key = String(value).toLowerCase().replace(/[^a-z]/g, '');
@@ -573,6 +667,25 @@ def format_html_report(result: dict[str, Any]) -> str:
     renderChart('chartCriticality', chartData.criticality, 'Workflows');
     renderChart('chartMonitoring', chartData.monitoring, 'Workflows');
     renderChart('chartSupportability', chartData.supportability, 'Workflows');
+
+    if (historyData.length > 1) {{
+      new Chart(document.getElementById('chartTrend'), {{
+        type: 'line',
+        data: {{
+          labels: historyData.map(h => h.timestamp),
+          datasets: [
+            {{ label: 'Total Workflows', data: historyData.map(h => h.total_workflows), borderColor: '#6366f1', tension: 0.3 }},
+            {{ label: 'Production', data: historyData.map(h => h.production_workflows), borderColor: '#f59e0b', tension: 0.3 }},
+            {{ label: 'Monitored', data: historyData.map(h => h.monitored_workflows), borderColor: '#22c55e', tension: 0.3 }},
+            {{ label: 'Supportable', data: historyData.map(h => h.supportable_workflows), borderColor: '#0ea5e9', tension: 0.3 }},
+          ],
+        }},
+        options: {{ responsive: true, scales: {{ y: {{ beginAtZero: true, ticks: {{ precision: 0 }} }} }} }},
+      }});
+    }} else {{
+      document.getElementById('trendBox').style.display = 'none';
+      document.getElementById('trendEmptyNote').style.display = 'block';
+    }}
 
     function populateFilter(selectId, key) {{
       const select = document.getElementById(selectId);
@@ -672,12 +785,20 @@ def main() -> None:
         default=[],
         help="Optional list of all Vertex teams to include in the report, even with zero workflow counts",
     )
+    parser.add_argument(
+        "--history",
+        help="Path to a JSON file used to track adoption metrics over time (appends a snapshot on each run)",
+    )
     args = parser.parse_args()
 
     result = analyze_workflows(args.input, all_teams=args.all_teams)
 
+    history_data: list[dict[str, Any]] = []
+    if args.history:
+        history_data = record_history_snapshot(result, args.history)
+
     if args.html:
-        html = format_html_report(result)
+        html = format_html_report(result, history=history_data)
         if args.output:
             output_path = Path(args.output)
             output_path.parent.mkdir(parents=True, exist_ok=True)
